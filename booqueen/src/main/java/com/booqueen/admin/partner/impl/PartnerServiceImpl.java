@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.booqueen.admin.partner.PartnerService;
 import com.booqueen.admin.partner.PartnerVO;
+import com.booqueen.partner.room.RoomAvailableVO;
 
 @Service
 public class PartnerServiceImpl implements PartnerService {
@@ -29,5 +30,11 @@ public class PartnerServiceImpl implements PartnerService {
 	@Override
 	public int unblockPartner(PartnerVO vo) {
 		return partnerDAO.unblockPartner(vo);
+	}
+	
+	@Override
+	public List<RoomAvailableVO> availableHotelList(RoomAvailableVO vo) {
+		
+		return partnerDAO.availableHotelList(vo);
 	}
 }

@@ -1,10 +1,16 @@
 package com.booqueen.partner.calendar;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -21,6 +27,7 @@ import com.booqueen.partner.room.RoomPriceVO;
 import com.booqueen.partner.room.RoomService;
 import com.booqueen.partner.room.RoomVO;
 
+
 @Controller
 public class CalendarController {
 	
@@ -31,16 +38,121 @@ public class CalendarController {
 	private RoomService roomService;
 	
 	@RequestMapping(value = "/calendar.pdo", method = RequestMethod.GET)
-	public String getMonthlyCalendar(Model model, RoomVO room, HttpSession session) {
+	public String getMonthlyCalendar(Model model, HttpSession session,DateVO vo) {
 		HotelVO hotel = hotelService.getHotelByMemberEmail((String) session.getAttribute("email"));
 		if(hotel != null) {
-			room = roomService.getRoomByHotelSerial(hotel.getSerialnumber());
-			model.addAttribute("room", room);
-			model.addAttribute("hotel", hotel);
+			RoomVO room = roomService.getRoomByHotelSerial(hotel.getSerialnumber());
+			
+	
 			//예약 내역 가져오기
 			List<RoomAvailableVO> available = roomService.selectRoomAvailable(room.getRoom_id());
+			for(RoomAvailableVO availVo :available) {
+				availVo.setType(room.getType());
+				DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");	
+				String openDate = sdFormat.format(availVo.getOpen_date());
+				
+				//일별 비교 
+				String formatDate = openDate.substring(8);
+				System.out.println("formatDate.substring(0,1) : "+formatDate.substring(0,1));
+				
+				if(formatDate.substring(0,1).equals("0")) {
+					System.out.println("formatDate  : "+ formatDate);
+					
+					System.out.println("formatDate.substring(1,2) : "+formatDate.substring(1,2));
+					
+					availVo.setDay(formatDate.substring(1,2));
+				}else {
+					availVo.setDay(formatDate);
+				}
+				
+				//월별 비교
+				String formatMonth = openDate.substring(5,7);
+				if(formatMonth.substring(0,1).equals("0")) {
+					System.out.println("formatMonth  : "+ formatMonth);
+					
+					System.out.println("formatMonth.substring(1,2) : "+formatMonth.substring(1,2));
+					int realMonth =Integer.parseInt(formatMonth.substring(1,2));
+					availVo.setMonth(realMonth);
+				}else {
+					int realMonth =Integer.parseInt(formatMonth.substring(1,2));
+					availVo.setMonth(realMonth);
+				}
+				
+				
+				
+				
+				
+				//년별 비교
+				String formatYear= openDate.substring(0,4);
+				int realYear = Integer.parseInt(formatYear);
+				availVo.setYear(realYear);
+				
+				
+			}
+
+			
+			model.addAttribute("room", room);
+			model.addAttribute("hotel", hotel);
 			model.addAttribute("available", available);
 			System.out.println(available.toString());
+	//////////////////////////////////////////////////////////////////
+			
+			
+			Calendar cal = Calendar.getInstance();
+			DateVO calendarData;
+			//검색 날짜
+			if(vo.getDate().equals("")&&vo.getMonth().equals("")){
+				vo= new DateVO(String.valueOf(cal.get(Calendar.YEAR)),String.valueOf(cal.get(Calendar.MONTH)),String.valueOf(cal.get(Calendar.DATE)),null);
+			}
+			//검색 날짜 end
+
+			Map<String, Integer> today_info =  vo.today_info(vo);
+			List<DateVO> dateList = new ArrayList<DateVO>();
+			
+			//실질적인 달력 데이터 리스트에 데이터 삽입 시작.
+			//일단 시작 인덱스까지 아무것도 없는 데이터 삽입
+			for(int i=1; i<today_info.get("start"); i++){
+				calendarData= new DateVO(null, null, null, null);
+				dateList.add(calendarData);
+			}
+			
+			//날짜 삽입
+			for (int i = today_info.get("startDay"); i <= today_info.get("endDay"); i++) {
+				if(i==today_info.get("today")){
+					calendarData= new DateVO(String.valueOf(vo.getYear()), String.valueOf(vo.getMonth()), String.valueOf(i), "today");
+				}else{
+					calendarData= new DateVO(String.valueOf(vo.getYear()), String.valueOf(vo.getMonth()), String.valueOf(i), "normal_date");
+				}
+				dateList.add(calendarData);
+			}
+
+			//달력 빈곳 빈 데이터로 삽입
+			int index = 7-dateList.size()%7;
+			
+			if(dateList.size()%7!=0){
+				
+				for (int i = 0; i < index; i++) {
+					calendarData= new DateVO(null, null, null, null);
+					dateList.add(calendarData);
+				}
+			}
+		
+			
+			
+/////////////////////////////////////////////////////////////////////////
+			
+			
+			
+			
+
+			System.out.println(dateList);
+					//배열에 담음
+			model.addAttribute("dateList", dateList);		//날짜 데이터 배열
+			model.addAttribute("today_info", today_info);
+			
+			
+			
+
 		}
 		return "calendar";
 	}

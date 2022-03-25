@@ -24,19 +24,266 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
 <title>${hotel.hotelname}· 캘린더</title>
-</head>
-<script>
-    $(document).ready(function () {
+<script type="text/javascript">
 
-        $('.input-daterange').datepicker({
-            format: 'yyyy년 mm월 dd일',
-            todayHighlight: true,
-            startDate: '0d'
-        });
 
-    });
-
+ 	var count =0;
+ 	var arr = new Array();
+	function scheduleEvent(e) {		
+		
+		
+		if($("#date"+e).hasClass('classColor')){
+			$("#date"+e).removeClass('classColor')
+			
+			console.log("arr.length:" +arr.length)
+			for(let i =0;i<arr.length;i++){
+				console.log("e : "+e)
+				console.log("arr[i] "+arr[i])
+				if(arr[i] == e){
+					arr.splice(i,1)
+				}
+			}
+			
+		}else{
+			$("#date"+e).addClass('classColor')		
+			arr.push(e)
+			count+=1;
+			
+		}
+		$("#scheduleArr").val(arr)
+		console.log(" arr : "+ 	$("#scheduleArr").val())
+		const firstNum = arr[0]
+		const endNum = arr[arr.length-1]
+		
+		console.log("firstNum : "+firstNum)
+		console.log("endNum : "+endNum)
+		
+		if(count == 2){
+			alert("그만눌러!")
+			console.log("(endNum-firstNum)- 1 :" + ((parseInt(endNum)-parseInt(firstNum))-1) )
+			console.log("????????")
+			const result =  ((parseInt(endNum)-parseInt(firstNum))-1)
+			const real = parseInt(result)+parseInt(firstNum)
+			for(let i=firstNum; i<real;i++){
+				alert("firstNum+result :" +real)
+				console.log("#date +i) :"+date+i)
+				const please = parseInt(i)+1
+				$("#date"+please).addClass('classColor')
+				
+				console.log("왜안들어가??"+"#date"+(i+1))
+			}	
+			
+		}
+		
+	}
+	
+	$(function(){
+		
+		$( "input[name='open_date_start']" ).datepicker();
+		$( "input[name='open_date_end']" ).datepicker();
+	})
+	
+	
+	
 </script>
+<style type="text/css">
+
+.classColor{
+		background-color: red!important;
+}
+table.scheduleTable {
+	width: 100%;
+	border-top: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
+
+.scheduleTable th {
+	border-left: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	padding: 5px;
+}
+
+body {
+	scrollbar-face-color: #F6F6F6;
+	scrollbar-highlight-color: #bbbbbb;
+	scrollbar-3dlight-color: #FFFFFF;
+	scrollbar-shadow-color: #bbbbbb;
+	scrollbar-darkshadow-color: #FFFFFF;
+	scrollbar-track-color: #FFFFFF;
+	scrollbar-arrow-color: #bbbbbb;
+	margin-left: "0px";
+	margin-right: "0px";
+	margin-top: "0px";
+	margin-bottom: "0px";
+}
+
+td {
+	font-size: 9pt;
+	color: #595959;
+	cursor: pointer;
+}
+
+th {
+	font-family: "돋움";
+	font-size: 9pt;
+	color: #000000;
+}
+
+select {
+	font-size: 9pt;
+	color: #595959;
+}
+
+.divDotText {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+A:link {
+	font-size: 9pt;
+	color: #000000;
+	text-decoration: none;
+}
+
+A:visited {
+	font-size: 9pt;
+	color: #000000;
+	text-decoration: none;
+}
+
+A:active {
+	font-size: 9pt;
+	color: red;
+	text-decoration: none;
+}
+
+A:hover {
+	font-size: 9pt;
+	color: red;
+	text-decoration: none;
+}
+
+.day {
+	width: 100px;
+	height: 30px;
+	font-weight: bold;
+	font-size: 15px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.sat {
+	color: #529dbc;
+}
+
+.sun {
+	color: red;
+}
+
+.today_button_div {
+	float: right;
+}
+
+.today_button {
+	width: 100px;
+	height: 30px;
+}
+
+.calendar {
+	width: 80%;
+	margin: auto;
+}
+
+.navigation {
+	margin-top: 100px;
+	margin-bottom: 30px;
+	text-align: center;
+	font-size: 25px;
+	vertical-align: middle;
+}
+
+.calendar_body {
+	width: 100%;
+	background-color: #FFFFFF;
+	border: 1px solid white;
+	margin-bottom: 50px;
+	border-collapse: collapse;
+}
+
+.calendar_body .today {
+	border: 1px solid white;
+	height: 120px;
+	background-color: #c9c9c9;
+	text-align: left;
+	vertical-align: top;
+}
+
+.calendar_body .date {
+	font-weight: bold;
+	font-size: 15px;
+	padding-left: 3px;
+	padding-top: 3px;
+}
+
+.calendar_body .sat_day {
+	border: 1px solid white;
+	height: 120px;
+	background-color: #EFEFEF;
+	text-align: left;
+	vertical-align: top;
+}
+
+.calendar_body .sat_day .sat {
+	color: #529dbc;
+	font-weight: bold;
+	font-size: 15px;
+	padding-left: 3px;
+	padding-top: 3px;
+}
+
+.calendar_body .sun_day {
+	border: 1px solid white;
+	height: 120px;
+	background-color: #EFEFEF;
+	text-align: left;
+	vertical-align: top;
+}
+
+.calendar_body .sun_day .sun {
+	color: red;
+	font-weight: bold;
+	font-size: 15px;
+	padding-left: 3px;
+	padding-top: 3px;
+}
+
+.calendar_body .normal_day {
+	border: 1px solid white;
+	height: 120px;
+	background-color: #EFEFEF;
+	vertical-align: top;
+	text-align: left;
+}
+
+.before_after_month {
+	margin: 10px;
+	font-weight: bold;
+}
+
+.before_after_year {
+	font-weight: bold;
+}
+
+.this_month {
+	margin: 10px;
+}
+li{
+	list-style-type: none;
+}
+</style>
+
+</head>
+
 <body>
 	<div class="main-container">
 		<div class="content">
@@ -84,6 +331,7 @@
 						<div class="av-monthly-layout">
 							<div class="calendarWrap">
 								<table class="calendarHeader">
+								
 									<tr>
 										<td class="calendarHeaderLeft"></td>
 
@@ -141,249 +389,131 @@
 								<span></span>
 								<div class="av-monthly-container">
 									<div class="av-monthly-container__grid">
-										<div class="av-monthly__grid">
-											<h2>2022년 3월</h2>
-											<table class="calendarBodytbl">
-												<colgroup>
-													<col width="300">
-													<col width="300">
-													<col width="300">
-													<col width="300">
-													<col width="300">
-													<col width="300">
-													<col width="300">
-												</colgroup>
-												<thead class="calendarBodytblHead">
-													<tr>
-														<th>Sun</th>
-														<th>Mon</th>
-														<th>Tue</th>
-														<th>Wed</th>
-														<th>Thu</th>
-														<th>Fri</th>
-														<th>Sat</th>
-													</tr>
+										<form name="calendarFrm" id="calendarFrm" action="" method="GET">
 
-												</thead>
-												<tbody class="calendarBodytblBody"></tbody>
-											</table>
+		<div class="calendar">
 
-											<script type="text/javascript">
-                                            var currYear = 1;
-                                            var currMonth = 1;
-                                            
-                                            $(function () {
-                                                //오늘 날짜 기준으로 달력 결정 및 생성
-                                                var now = new Date();
-                                                var nowYear = now.getFullYear();
-                                                var nowMon = now.getMonth() + 1;
-                                                $("#_calendarHeaderYear")
-                                                    .val(nowYear)
-                                                    .attr("selected", "selected");
-                                                $("#_calendarHeaderMonth")
-                                                    .val(nowMon)
-                                                    .attr("selected", "selected");
-                                                makeCalendar(nowYear, nowMon);
+			<!--날짜 네비게이션  -->
+			<div class="navigation">
+				<a class="before_after_year"
+					href="calendar.pdo?year=${today_info.search_year-1}&month=${today_info.search_month}">
+					&lt;&lt; <!-- 이전해 -->
+				</a> <a class="before_after_month"
+					href="calendar.pdo?year=${today_info.before_year}&month=${today_info.before_month}">
+					&lt; <!-- 이전달 -->
+				</a> 
+				<span class="this_month" style="color: black;}"> &nbsp;${today_info.search_year}. 
+					<c:if test="${today_info.search_month<10}">0</c:if>${today_info.search_month}
+				</span> 
+				<a class="before_after_month"
+					href="calendar.pdo?year=${today_info.after_year}&month=${today_info.after_month}">
+					<!-- 다음달 --> &gt;
+				</a> <a class="before_after_year"
+					href="calendar.pdo?year=${today_info.search_year+1}&month=${today_info.search_month}">
+					<!-- 다음해 --> &gt;&gt;
+				</a>
+			</div>
 
-                                                currYear = parseInt($("#_calendarHeaderYear option:selected").val());
-                                                currMonth = parseInt($("#_calendarHeaderMonth option:selected").val());
-                                                // alert('현재년' + currYear + '  현재월' + currMonth); select 변경 이벤트 발생하면 선택한 년-월에
-                                                // 해당하는 달력을 그려줌
-                                                $(".calendarSelect").change(function () {
-                                                    currYear = parseInt($("#_calendarHeaderYear option:selected").val());
-                                                    currMonth = parseInt($("#_calendarHeaderMonth option:selected").val());
-                                                    $(".calendarRow").remove();
-                                                    makeCalendar(currYear, currMonth);
-                                                });
+			<!-- <div class="today_button_div"> -->
+			<!-- <input type="button" class="today_button" onclick="javascript:location.href='/calendar.do'" value="go today"/> -->
+			<!-- </div> -->
+			<table class="calendar_body">
 
-                                                //버튼을 클릭하면 선택한 년-월에 해당하는 달력을 그려줌 Ajax 통신을 통해 년-월을 넘겨서 일정 정보를 받아 테이블을 만들어주는 함수
-                                                $("#btnDelInDetail").click(function () {
-                                                    alert('삭제버튼');
-                                                    //배열 초기화
-                                                    var viewData = {};
-                                                    //data[키] 벨류
-                                                    viewData["seq"] = '${bbs.seq}';
-
-                                                    $.ajax({
-                                                        contentType: 'application/json',
-                                                        dataType: 'json',
-                                                        url: 'bbsdeletepost.do',
-                                                        type: 'post',
-                                                        data: JSON.stringify(viewData),
-                                                        success: function (resp) {
-                                                            //alert(resp);
-                                                            if (resp === 1) {
-                                                                alert('삭제가 완료되었습니다');
-                                                                location.href = "bbslist.do";
-                                                            } else {
-                                                                alert('삭제에 실패했습니다. 다시 시도해 주세요.');
-                                                            }
-
-                                                        },
-                                                        error: function () {
-                                                            alert('error');
-                                                        }
-                                                    });
-                                                });
-                                            });
-
-                                            //num 매개변수를 받아 현재 년-월을 변경해주는 메소드
-                                            function changeYearAndMonth(num) {
-                                                //alert('현재년' + currYear + '  현재월' + currMonth);
-
-                                                $("#_calendarHeaderYear").removeAttr("selected", "selected");
-                                                $("#_calendarHeaderMonth").removeAttr("selected", "selected");
-                                                //alert( typeof currYear + ' ' + typeof currMonth);
-
-                                                switch (num) {
-                                                    case 1:
-                                                        currYear = ((currYear - 1) < 2020)
-                                                            ? 2020
-                                                            : (currYear - 1);
-                                                        break;
-                                                    case 2:
-                                                        if ((currMonth - 1) < 1) {
-
-                                                            if ((currYear - 1) < 2020) {
-                                                                alert('2020년 이하로 설정할 수 없습니다.');
-                                                                currMonth = 12;
-                                                            } else {
-                                                                currYear = currYear - 1;
-                                                                currMonth = 1;
-                                                            }
-                                                        } else {
-                                                            currMonth = currMonth - 1;
-                                                        }
-                                                        break;
-                                                    case 3:
-                                                        if ((currMonth + 1) > 12) {
-                                                            currMonth = 1;
-                                                            if ((currYear + 1) > 2023) {
-                                                                alert('2023년 이상으로 설정할 수 없습니다');
-                                                                currMonth = 12;
-                                                            } else {
-                                                                currYear = currYear + 1;
-                                                            }
-                                                        } else {
-                                                            currMonth = currMonth + 1;
-                                                        }
-                                                        break;
-                                                    case 4:
-                                                        currYear = ((currYear + 1) > 2023)
-                                                            ? 2023
-                                                            : (currYear + 1);
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-
-                                                //설정된 값에 맞게 select 설정
-                                                $("#_calendarHeaderYear")
-                                                    .val(currYear)
-                                                    .attr("selected", "selected");
-                                                $("#_calendarHeaderMonth")
-                                                    .val(currMonth)
-                                                    .attr("selected", "selected");
-
-                                                //달력 지우고 새로 그려주기
-                                                $(".calendarRow").remove();
-                                                makeCalendar(currYear, currMonth);
-                                            }
-
-                                            //매개변수에 맞는 달력을 그려 주는 메소드
-                                            function makeCalendar(year, month) {
-                                                //select에 해당하는 년-월을 매개변수로 받아서 날짜 설정
-                                                
-
-                                                
-                                                
-                                                var now = new Date(year + '-' + month + '-01');
-                                                var dayOfWeek = now.getDay() + 1; //시작요일 설정
-                                                var lastDay = (new Date(year, month, 0)).getDate(); //마지막 날짜 설정
-                                                var weeks = (lastDay / 7) + 1; // 총 주 수를 설정
-                                                
-                                     
-                                                
-                                                
-                                                //시작일 전 빈칸 채우기
-                                                var trDay = document.createElement('tr');
-                                                trDay.setAttribute('class', 'calendarRow');
-                                                var tdDay = document.createElement('td');
-                                                tdDay.setAttribute('class', 'tableBlank');
-                                                tdDay.append('');
-                                                for (i = 1; i < dayOfWeek; i++) {
-                                                    tdDay = document.createElement('td');
-                                                    tdDay.setAttribute('class', 'tableBlank');
-                                                    tdDay.setAttribute('id', 'blank');
-                                                    tdDay.append('');
-                                                    trDay.append(tdDay);
-                                                }
+				<thead>
+					<tr bgcolor="#CECECE">
+						<td class="day sun">일</td>
+						<td class="day">월</td>
+						<td class="day">화</td>
+						<td class="day">수</td>
+						<td class="day">목</td>
+						<td class="day">금</td>
+						<td class="day sat">토</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<c:forEach var="dateList" items="${dateList}" varStatus="date_status">
+							<c:choose>
+								<c:when test="${dateList.value=='today'}">
+									<a href="#">
+									<td class="today" id="date${dateList.date}" onmouseup="scheduleEvent('${dateList.date}')" >
+										<ul class="date">
+											<span>${dateList.date}</span>	
+											<c:forEach var="available" items="${available}">	
+ 												<c:if test="${available.year eq dateList.year}"> 
 													
-                                               
-                                                //날짜 채우기 alert('dayOfWeek : ' + dayOfWeek + (typeof dayOfWeek));
-                                                for (i = 1; i < lastDay + 1; i++) {
-                                                    // console.log( 'i : ' + i + ',  cond:' + (i + dayOfWeek - 1 ) + ',  dayOfWeek :
-                                                    // ' + dayOfWeek ) ;
-                                                    tdDay = document.createElement('td');
-                                                    tdDay.setAttribute('class', 'tableDay');
-                                                    tdDay.setAttribute('value', i);
-                                                    //tdDay.setAttribute('id', 'HighLight');
-                                                    //tdDay.setAttribute('onclick', 'HighLightTD(this,"#d8fafa","#003b95")');
-                                                    tdDay.append(i + '일');
-                                                    tdDay.append(
-                                                    		"<c:forEach items='${available}' var='available' varStatus='status'><c:choose><c:when test= 'i==date'>잔여객실 : ${available.available}</c:when></c:choose></c:forEach>" 
-            												);
-                                                    trDay.append(tdDay);
-                                                    if ((i + dayOfWeek - 1) % 7 === 0 && i != lastDay) {
-                                                        //7일을 모두 수행했으면 새로운 행 추가
-                                                        $(".calendarBodytbl").append(trDay);
-                                                        trDay = document.createElement('tr');
-                                                        trDay.setAttribute('class', 'calendarRow');
-                                                        trDay.setAttribute('id', 'result');
-                                                        
-                                                    }
-                                                }
-                                                //마지막주 빈칸append
-                                                for (i = 0; i < ((7 - ((dayOfWeek + lastDay - 1)) % 7)) % 7; i++) {
-                                                    tdDay = document.createElement('td');
-                                                    tdDay.setAttribute('id', 'blank');
-                                                    tdDay.append('');
-                                                    trDay.append(tdDay);
-                                                }
+													<c:if test="${available.month eq dateList.month+1}">
+															<c:if test="${available.day eq dateList.date}">
+																<li id="${available.sequence}">${available.type}</li>										
+															</c:if>														
+													</c:if>
+												</c:if> 
+											</c:forEach>	
+										</ul>
+										<div></div>
+										</td>
+										</a>
+								</c:when>
+								<c:when test="${date_status.index%7==6}">
+									<td class="sat_day" id="date${dateList.date}"  onclick="scheduleEvent('${dateList.date}')">
+										<ul class="sat"><span>${dateList.date}</span>
+									<c:forEach var="available" items="${available}">	
+ 												<c:if test="${available.year eq dateList.year}"> 													
+													<c:if test="${available.month eq dateList.month+1}">
+															<c:if test="${available.day eq dateList.date}">
+																<li id="${available.sequence}">${available.type}</li>										
+															</c:if>														
+													</c:if>
+												</c:if>
+											</c:forEach>	
+										</ul>
+										<div></div>
+									</td>
+								</c:when>
+								<c:when test="${date_status.index%7==0}">
+					</tr>
+					<tr>
+									<td class="sun_day"  id="date${dateList.date}"  onclick="scheduleEvent('${dateList.date}')">
+										<ul class="sun"><span>${dateList.date}</span>
+											<c:forEach var="available" items="${available}">	
+ 												<c:if test="${available.year eq dateList.year}"> 
+													
+													<c:if test="${available.month eq dateList.month+1}">
+															<c:if test="${available.day eq dateList.date}">
+																<li id="${available.sequence}">${available.type}</li>										
+															</c:if>														
+													</c:if>
+ 												</c:if> 
+											</c:forEach>	
+										</ul>
+										<div></div>
+									</td>
+								</c:when>
+								<c:otherwise>
+									<td class="normal_day"  id="date${dateList.date}"  onclick="scheduleEvent('${dateList.date}')">
+										<ul class="date"><span>${dateList.date}</span>
+												<c:forEach var="available" items="${available}">	
+												<c:if test="${available.year eq dateList.year}"> 
+													
+													<c:if test="${available.month eq dateList.month+1}">
+														
+															<c:if test="${available.day eq dateList.date}">
+																<li id="${available.sequence}">${available.type}</li>										
+															</c:if>														
+													</c:if>
+												</c:if> 
+											</c:forEach>	
+										</ul>
+										<div></div>
+									</td>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+				</tbody>
 
-                                                $(".calendarBodytbl").append(trDay); //마지막주
-                                            }
-                                            
-                                        </script>
-											<script>
-
-                                            $(function () {
-                                                var isMouseDown = false,
-                                                    isHighlighted;
-                                                $(".calendarBodytbl td")
-                                                    .mousedown(function () {
-                                                        isMouseDown = true;
-                                                        $(this).toggleClass("highlighted");
-                                                        isHighlighted = $(this).hasClass("highlighted");
-                                                        return false;
-                                                    })
-                                                    .mouseover(function () {
-                                                        if (isMouseDown) {
-                                                            $(this).toggleClass("highlighted", isHighlighted);
-                                                        }
-                                                    })
-                                                    .bind("selectstart", function () {
-                                                        return false;
-                                                    })
-
-                                                $(document)
-                                                    .mouseup(function () {
-                                                        isMouseDown = false;
-                                                    });
-                                            });
-
-                                        </script>
-										</div>
+			</table>
+		</div>
+	</form>
 									</div>
 									<div class="av-monthly-container__form">
 										<form action="update-calendar.pdo" method="POST">
@@ -644,6 +774,7 @@
 					</div>
 				</main>
 			</div>
+			<input type="hidden" id="scheduleArr">
 			<script>
               		//calendar에서 선택된 날짜 받아오기
                 </script>
@@ -657,9 +788,11 @@
                 	$("input:radio[name='non_refund']:radio[value='no']").prop('checked', false);
                 	
                 	//(미완성) 예약 불가 선택시 textfield disabled 적용
-                	if("input:radio[name='standard']:radio[value='no']").prop('checked', false) {
-                		$('input[name="refundable"]').setAttribute('disabled', disabled);
-                	}
+//                 	if("input:radio[name='standard']:radio[value='no']").prop('checked', false) {
+//                 		$('input[name="refundable"]').setAttribute('disabled', disabled);
+//                 	}
+                	
+                	
                 	
                 </script>
 			<jsp:include page="/WEB-INF/partner/footer.jsp" />

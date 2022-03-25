@@ -25,5 +25,9 @@
 	<select id="selectInquiryByHotelSerial" resultType="inquiry">
 		SELECT * FROM board where serialnumber = 1118
 	</select>
+	
+	<select id="availableHotelList" resultType="roomAvailable">
+		select * from room_available where room_id =#{room_id}
+	</select>
 
 </mapper>

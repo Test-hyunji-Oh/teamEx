@@ -8,6 +8,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.booqueen.admin.partner.PartnerVO;
+import com.booqueen.partner.room.RoomAvailableVO;
 
 @Repository("PartnerDAO")
 public class PartnerDAO {
@@ -33,5 +34,9 @@ public class PartnerDAO {
 
 	public int unblockPartner(PartnerVO vo) throws DataAccessException{
 		return sqlSessionTemplate.update("PartnerDAO.unblockPartner", vo);
+	}
+	
+	public List<RoomAvailableVO>  availableHotelList(RoomAvailableVO vo){
+		return sqlSessionTemplate.selectList("HotelDAO.availableHotelList", vo);
 	}
 }
